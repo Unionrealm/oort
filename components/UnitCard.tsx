@@ -25,24 +25,19 @@ export default function UnitCard({ place, index = 0, aspectRatio = "portrait" }:
         sizes="50vw"
       />
 
-      {/* Bottom gradient scrim */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-
-      {/* Signal count — top right, minimal */}
-      {place.signalCount > 0 && (
-        <div className="absolute top-2 right-2">
-          <span className="text-[9px] font-semibold text-white/60 tabular-nums">
-            {place.signalCount}
-          </span>
-        </div>
-      )}
+      {/* Bottom gradient scrim — tall enough for comfortable text */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
 
       {/* Text floats over scrim at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 p-2.5">
-        <p className="text-[11px] font-bold text-white leading-tight truncate">
+      <div className="absolute bottom-0 left-0 right-0 px-3 py-3">
+        {/* Zone pill */}
+        <span className="inline-block text-[10px] font-medium text-white/70 bg-white/10 backdrop-blur-sm rounded-full px-2 py-0.5 mb-1.5">
+          {place.zone}
+        </span>
+        <h3 className="text-sm font-bold text-white leading-snug text-shadow truncate">
           {place.name}
-        </p>
-        <p className="text-[10px] text-white/60 mt-0.5 truncate">
+        </h3>
+        <p className="text-xs text-white/65 mt-0.5 text-shadow truncate">
           {place.categoryEmoji} {place.category}
         </p>
       </div>
