@@ -76,7 +76,7 @@ export default function SignalRequestCard({ post, showPlace = true }: SignalRequ
 
   return (
     <>
-      <div className="bg-surface rounded-2xl p-4 border border-border/50">
+      <div className="mx-4 mb-4 rounded-2xl p-4 border border-[#2a2a2a]">
         <div className="flex items-start gap-3">
           <Image
             src={post.userAvatar}

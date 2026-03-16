@@ -21,61 +21,15 @@ function timeAgo(isoString: string): string {
 }
 
 export default function LiveFeedPost({ post, showPlace = true }: LiveFeedPostProps) {
-  const isSignal = post.type === "signal";
   const isLivePeek = post.type === "live_peek";
 
-  if (isSignal) {
-    return (
-      <div className="bg-surface rounded-2xl p-4 border border-border/50">
-        <div className="flex items-start gap-3">
-          <Image
-            src={post.userAvatar}
-            alt={post.userName}
-            width={36}
-            height={36}
-            className="rounded-full object-cover"
-          />
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-sm font-semibold text-textPrimary">@{post.userName}</span>
-              <span className="text-xs text-textMuted">{timeAgo(post.timestamp)}</span>
-            </div>
-            <div className="bg-surfaceHigh rounded-xl p-3 mb-3">
-              <span className="text-lg mr-2">📡</span>
-              <span className="text-sm text-textPrimary">{post.text}</span>
-            </div>
-            {showPlace && (
-              <Link
-                href={`/place/${post.placeId}`}
-                className="flex items-center gap-1.5 text-accent text-xs font-medium mb-3 hover:underline"
-              >
-                <MapPin size={11} />
-                {post.placeName}
-                <span className="text-textMuted">· {post.zone}</span>
-              </Link>
-            )}
-            <div className="flex items-center gap-2">
-              <button className="flex items-center gap-1.5 px-3 py-1.5 bg-accent text-white rounded-lg text-xs font-semibold hover:bg-accentHover transition-colors">
-                Answer
-              </button>
-              <span className="text-xs text-textMuted">
-                {post.reactions.helpful} responses
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div
-      className={`bg-surface rounded-2xl overflow-hidden border ${
-        isLivePeek ? "border-accent/40 glow-accent" : "border-border/50"
-      }`}
-    >
-      {/* Header */}
-      <div className="flex items-center gap-3 p-3 pb-2">
+    <div className="border-b border-border/20">
+      {/* Live Peek: thin accent line at top */}
+      {isLivePeek && <div className="h-[1.5px] bg-accent/60" />}
+
+      {/* Header — avatar + name + timestamp float directly on dark background */}
+      <div className="flex items-center gap-3 px-4 pt-4 pb-3">
         <Image
           src={post.userAvatar}
           alt={post.userName}
@@ -95,7 +49,7 @@ export default function LiveFeedPost({ post, showPlace = true }: LiveFeedPostPro
           </div>
           <div className="flex items-center gap-1.5 text-xs text-textMuted">
             <span>{timeAgo(post.timestamp)}</span>
-            {/* Show place in header only for text-only posts (image posts show place on the photo) */}
+            {/* Place shown in header only for text-only posts (photo posts show it over the image) */}
             {showPlace && !post.photo && (
               <>
                 <span>·</span>
@@ -113,9 +67,9 @@ export default function LiveFeedPost({ post, showPlace = true }: LiveFeedPostPro
         <div className="text-xs text-textMuted">{post.zone}</div>
       </div>
 
-      {/* Photo */}
+      {/* Photo — full width, edge to edge, no rounded corners */}
       {post.photo && (
-        <div className="relative w-full aspect-[4/3] mx-0">
+        <div className="relative w-full aspect-[4/3]">
           <Image
             src={post.photo}
             alt={post.text}
@@ -123,7 +77,7 @@ export default function LiveFeedPost({ post, showPlace = true }: LiveFeedPostPro
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
           />
-          {/* Gradient scrim — same visual language as explore grid */}
+          {/* Gradient scrim */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
           {/* Place name floats over image bottom */}
           {showPlace && (
@@ -138,19 +92,20 @@ export default function LiveFeedPost({ post, showPlace = true }: LiveFeedPostPro
               </Link>
             </div>
           )}
+          {/* Live peek: subtle accent inner border */}
           {isLivePeek && (
-            <div className="absolute inset-0 border-2 border-accent/30 rounded-0" />
+            <div className="absolute inset-0 border border-accent/20" />
           )}
         </div>
       )}
 
-      {/* Text */}
+      {/* Caption */}
       <div className="px-4 py-3">
         <p className="text-sm text-textPrimary leading-relaxed">{post.text}</p>
       </div>
 
-      {/* Reactions */}
-      <div className="flex items-center gap-1 px-4 pb-3 pt-1 border-t border-border/30">
+      {/* Reactions — sit directly on dark background, no top border */}
+      <div className="flex items-center gap-1 px-4 pb-4">
         <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-textMuted hover:text-textPrimary hover:bg-surfaceHigh transition-all text-xs font-medium">
           <ThumbsUp size={13} />
           <span>Helpful</span>

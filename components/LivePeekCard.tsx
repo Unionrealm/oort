@@ -21,8 +21,11 @@ function timeAgo(isoString: string): string {
 
 export default function LivePeekCard({ post }: LivePeekCardProps) {
   return (
-    <div className="rounded-2xl overflow-hidden border border-accent/40 glow-accent bg-surface">
-      {/* Photo with gradient */}
+    <div className="border-b border-border/20">
+      {/* Accent line signals live content */}
+      <div className="h-[1.5px] bg-accent/60" />
+
+      {/* Photo — full width, no rounding */}
       {post.photo && (
         <div className="relative w-full aspect-[4/3]">
           <Image
@@ -32,7 +35,7 @@ export default function LivePeekCard({ post }: LivePeekCardProps) {
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
           />
-          {/* Accent border overlay */}
+          {/* Subtle accent inner border */}
           <div className="absolute inset-0 border border-accent/20" />
 
           {/* Live Peek badge */}
@@ -55,8 +58,8 @@ export default function LivePeekCard({ post }: LivePeekCardProps) {
         </div>
       )}
 
-      {/* Post info */}
-      <div className="p-3">
+      {/* Post info — sits on dark background */}
+      <div className="px-4 py-3 pb-4">
         <div className="flex items-center gap-2 mb-2">
           <Image
             src={post.userAvatar}
