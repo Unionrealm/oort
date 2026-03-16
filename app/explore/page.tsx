@@ -19,7 +19,6 @@ const zoneTabs = [
 const filterChips = [
   { id: "all", label: "All" },
   { id: "open", label: "Open Now" },
-  { id: "live", label: "🔴 Live" },
   { id: "trending", label: "🔥 Trending" },
   { id: "cafe", label: "☕ Cafés" },
   { id: "food", label: "🍜 Food" },
@@ -34,7 +33,6 @@ export default function ExplorePage() {
     const zoneMatch = activeZone === "all" || place.zone === activeZone;
     let filterMatch = true;
     if (activeFilter === "open") filterMatch = place.isOpenNow;
-    else if (activeFilter === "live") filterMatch = place.isLive;
     else if (activeFilter === "trending") filterMatch = place.signalCount > 150;
     else if (activeFilter === "cafe") filterMatch = place.category === "Café";
     else if (activeFilter === "food")
@@ -50,9 +48,9 @@ export default function ExplorePage() {
     <div className="min-h-screen bg-background">
       <TopBar variant="back" title="Explore" showFilter />
 
+      {/* Zone tabs + filter chips keep their padding */}
       <ZoneTabs tabs={zoneTabs} activeTab={activeZone} onSelect={setActiveZone} />
 
-      {/* Filter chips */}
       <div className="overflow-x-auto scrollbar-hide px-4 pb-3">
         <div className="flex gap-2 min-w-max">
           {filterChips.map((chip) => (
@@ -71,21 +69,19 @@ export default function ExplorePage() {
         </div>
       </div>
 
-      {/* 2-column grid */}
-      <div className="max-w-desktop mx-auto px-4 pb-8">
-        {filtered.length > 0 ? (
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
-            {filtered.map((place, i) => (
-              <UnitCard key={place.id} place={place} index={i} aspectRatio="portrait" />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-20">
-            <div className="text-4xl mb-3">🔍</div>
-            <p className="text-textSecondary text-sm">No places match this filter</p>
-          </div>
-        )}
-      </div>
+      {/* Full-bleed grid — no horizontal padding */}
+      {filtered.length > 0 ? (
+        <div className="grid grid-cols-2 gap-[2px] pb-8">
+          {filtered.map((place, i) => (
+            <UnitCard key={place.id} place={place} index={i} aspectRatio="portrait" />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-20">
+          <div className="text-4xl mb-3">🔍</div>
+          <p className="text-textSecondary text-sm">No places match this filter</p>
+        </div>
+      )}
     </div>
   );
 }
