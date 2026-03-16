@@ -15,7 +15,7 @@ export default function UnitCard({ place, index = 0, aspectRatio = "portrait" }:
   const aspectClass = aspectRatio === "portrait" ? "aspect-[4/5]" : "aspect-square";
 
   return (
-    <Link href={`/place/${place.id}`} className={`block group relative overflow-hidden ${aspectClass} ${staggerClass} cursor-pointer`}>
+    <Link href={`/place/${place.id}`} className={`block group relative overflow-hidden rounded-[10px] ${aspectClass} ${staggerClass} cursor-pointer`}>
       {/* Image fills 100% of cell */}
       <Image
         src={place.photo}

@@ -71,7 +71,7 @@ export default function ExplorePage() {
 
       {/* Full-bleed grid — no horizontal padding */}
       {filtered.length > 0 ? (
-        <div className="grid grid-cols-2 gap-[2px] pb-8">
+        <div className="grid grid-cols-2 gap-2 px-3 pb-8">
           {filtered.map((place, i) => (
             <UnitCard key={place.id} place={place} index={i} aspectRatio="portrait" />
           ))}
