@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { notFound } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { MapPin, Phone, Clock, Star, Users, Zap } from "lucide-react";
 import TopBar from "@/components/TopBar";
@@ -36,8 +37,8 @@ export default function PlacePage({ params }: PlacePageProps) {
   const place = places.find((p) => p.id === params.id);
   if (!place) notFound();
 
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>("live");
-  const [signalModalOpen, setSignalModalOpen] = useState(false);
 
   const placePosts = posts.filter((p) => p.placeId === place.id);
 
@@ -146,7 +147,7 @@ export default function PlacePage({ params }: PlacePageProps) {
               placePosts.map((post, i) => (
                 <div key={post.id} className={`stagger-${Math.min(i + 1, 10)}`}>
                   {post.type === "signal" ? (
-                    <SignalRequestCard post={post} showPlace={false} />
+                    <SignalRequestCard post={post} showPlace={false} className="mb-4" />
                   ) : (
                     <LiveFeedPost post={post} showPlace={false} />
                   )}
@@ -276,54 +277,14 @@ export default function PlacePage({ params }: PlacePageProps) {
         )}
       </div>
 
-      {/* Signal Request floating button */}
+      {/* Ask the crowd → opens post/new with signal type preset */}
       <button
-        onClick={() => setSignalModalOpen(true)}
+        onClick={() => router.push("/post/new?type=signal")}
         className="fixed bottom-24 right-4 flex items-center gap-2 bg-surface border border-border px-4 py-3 rounded-full shadow-lg hover:bg-surfaceHigh transition-all z-40"
       >
         <span className="text-base">📡</span>
         <span className="text-sm font-semibold text-textPrimary">Ask the crowd</span>
       </button>
-
-      {/* Signal Modal */}
-      {signalModalOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
-          onClick={() => setSignalModalOpen(false)}
-        >
-          <div
-            className="bg-surface rounded-2xl p-6 w-full max-w-md border border-border"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="text-center mb-4">
-              <span className="text-3xl">📡</span>
-              <h3 className="text-lg font-bold text-textPrimary mt-2">Ask the Crowd</h3>
-              <p className="text-sm text-textMuted mt-1">
-                About <span className="text-accent">{place.name}</span>
-              </p>
-            </div>
-            <textarea
-              className="w-full bg-surfaceHigh border border-border rounded-xl p-3 text-sm text-textPrimary placeholder-textMuted focus:outline-none focus:border-accent resize-none"
-              placeholder={`Is ${place.name} open right now? What's the wait like?`}
-              rows={3}
-            />
-            <div className="flex gap-3 mt-4">
-              <button
-                onClick={() => setSignalModalOpen(false)}
-                className="flex-1 py-3 rounded-xl border border-border text-textSecondary text-sm font-medium hover:bg-surfaceHigh transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => setSignalModalOpen(false)}
-                className="flex-1 py-3 rounded-xl bg-accent text-white text-sm font-semibold hover:bg-accentHover transition-colors"
-              >
-                Send Signal
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

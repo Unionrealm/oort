@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Camera, MapPin, X } from "lucide-react";
 import Image from "next/image";
 
@@ -21,7 +21,8 @@ const placeSuggestions = [
 
 export default function PostNewPage() {
   const router = useRouter();
-  const [postType, setPostType] = useState("update");
+  const searchParams = useSearchParams();
+  const [postType, setPostType] = useState(searchParams.get("type") ?? "update");
   const [text, setText] = useState("");
   const [selectedPlace, setSelectedPlace] = useState<typeof placeSuggestions[0] | null>(null);
   const [placeSearch, setPlaceSearch] = useState("");
