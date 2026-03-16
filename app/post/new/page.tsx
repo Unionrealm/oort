@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Camera, MapPin, X } from "lucide-react";
 import Image from "next/image";
@@ -19,7 +19,7 @@ const placeSuggestions = [
   { id: "rooftop-gangnam", name: "Sky Social Rooftop", zone: "Gangnam" },
 ];
 
-export default function PostNewPage() {
+function PostNewForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [postType, setPostType] = useState(searchParams.get("type") ?? "update");
@@ -203,5 +203,13 @@ export default function PostNewPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PostNewPage() {
+  return (
+    <Suspense>
+      <PostNewForm />
+    </Suspense>
   );
 }
